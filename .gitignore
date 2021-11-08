@@ -3,4 +3,5 @@
 !.gitattributes
 !.bashrc
 !.vimrc
+!.vim/vimrc
 !.local/bin/
