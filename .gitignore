@@ -6,5 +6,5 @@
 !.vimrc
 !readme.markdown
 
-!nginx/
-!bin/
+!nginx/*
+!bin/*
