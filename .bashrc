@@ -13,7 +13,7 @@
 	export HISTFILE="$XDG_DATA_HOME"/bash/history
 
 # GnuPG
-  export GNUPGHOME="$XDG_DATA_HOME"/gnupg
+	export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 
 # Node
 	export NPM_PACKAGES="$XDG_CONFIG_HOME/npm-packages"
@@ -26,5 +26,3 @@
 	export PATH=$PATH:$GOPATH/bin
 	export GOPATH=$GOPATH:/home/cat/gocode
 
-# Path's
-  export PATH="$PATH:/home/cat/server"

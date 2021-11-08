@@ -8,7 +8,7 @@
   shelltype=$(ps -p $$ -oargs= | head -n1 | cut -d " " -f1)
 # If Bash
   if [[ ${shelltype} == /bin/bash ]] ; then
-    echo "  export PATH=\"\$PATH:$PWD\"" >> ${HOME}/.bashrc
+    echo "  export PATH=\"\$PATH:$PWD\"" >>		${HOME}/.bashrc
     echo "$PWD added to PATH..."
     echo "Remember to 'source ~/.bashrc'!"
   fi
