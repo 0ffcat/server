@@ -1,0 +1,40 @@
+server {
+    server_name your_domain www.your_domain;
+    root /var/www/your_domain;
+
+    index index.html index.htm index.php;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+    error_page 404 /;
+    error_page 500 502 503 504 /;
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+    }
+
+    listen [::]:443 ssl ipv6only=on;
+    listen 443 ssl;
+    ssl_certificate /etc/letsencrypt/live/your_domain/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/your_domain/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf; 
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; 
+}
+
+server {
+# www
+    if ($host = www.your_domain) {
+        return 301 https://$host$request_uri;
+    } 
+# non-www
+    if ($host = your_domain) {
+        return 301 https://$host$request_uri;
+    }
+
+    listen [::]:80;
+    listen 80;
+    server_name your_domain www.your_domain;
+    return 404; 
+}
