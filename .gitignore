@@ -3,5 +3,4 @@
 !.gitattributes
 !.bashrc
 !.vimrc
-!nginx/
-!bin/
+!.local/bin/

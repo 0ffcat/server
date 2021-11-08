@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# Title:	newsite
-# By: 		cyancat
-# Tag Added:	06-06-2020
-# Description:  Quickly adds site underconstruction to folder
-
-cp ~/server/nginx/index.html .
