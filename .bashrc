@@ -17,15 +17,12 @@
 # LS Colour Output
 	export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33'
 
-# XDA_DATA_HOME Fix 
+## Cleaning up the home directory: 
 	export XDG_DATA_HOME=${XDG_DATA_HOME:="$HOME/.local/share"}
-
 	# Bash History
 		export HISTFILE="$XDG_DATA_HOME"/bash/history
-
 	# GnuPG
 		export GNUPGHOME="$XDG_DATA_HOME"/gnupg
-
 	# Node
 		export NPM_PACKAGES="$XDG_CONFIG_HOME/npm-packages"
 		export NODE_PATH="$NPM_PACKAGES/lib/node_modules:$NODE_PATH"
@@ -33,7 +30,7 @@
 		export NODE_REPL_HISTORY="$XDG_DATA_HOME"/node_repl_history
 
 # Go
-		export GOPATH=/home/cat/golib
-		export PATH=$PATH:$GOPATH/bin
-		export GOPATH=$GOPATH:/home/cat/gocode
+	export GOPATH=/home/cat/golib
+	export PATH=$PATH:$GOPATH/bin
+	export GOPATH=$GOPATH:/home/cat/gocode
 

@@ -3,5 +3,6 @@
 !.gitattributes
 !.bashrc
 !.profile
+!.config/neofetch/config.conf
 !.vim/vimrc
 !.local/bin/
