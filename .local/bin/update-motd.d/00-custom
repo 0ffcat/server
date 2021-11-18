@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Neofetch (loads user conf)
+echo ""
+sudo -u cat neofetch --config /home/cat/.config/neofetch/config.conf
+
+# From 98-reboot-required
+[ -x /usr/lib/update-notifier/update-motd-reboot-required ] && exec /usr/lib/update-notifier/update-motd-reboot-required
+
+# From 90-updates-available
+	stamp="/var/lib/update-notifier/updates-available"
+	[ ! -r "$stamp" ] || cat "$stamp"
+	find $stamp -newermt 'now-7 days' 2> /dev/null | grep -q -m 1 '.' || /usr/share/update-notifier/notify-updates-outdated
