@@ -1,9 +1,7 @@
-# Modified from the standard DigitalOcean .profile file
+# Modified Version of the Standard Ubuntu ~/.profile File
 
-# Load Bashrc File
-	if [ -n "$BASH_VERSION" ]; then
-		[ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"
-	fi
+	# If Bash Is Running, Include ~/.bashrc
+		[ -n "$BASH_VERSION" ] && [ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"
 
-# Set Bin Path
-	[ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
+	# Set Bin Path (the one I use, anyway)
+		[ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
