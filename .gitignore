@@ -2,6 +2,6 @@
 !.gitignore
 !.gitattributes
 !.bashrc
-!.vimrc
+!.profile
 !.vim/vimrc
 !.local/bin/
