@@ -10,9 +10,10 @@
 	alias ll='ls -alF'
 	alias la='ls -A'
 	alias l='ls -CF'
+	alias t="tmux -f ${HOME}/.config/tmux/tmux.conf"
 
 # PS1
-	export PS1="\n\\$ \T \[$(tput sgr0)\]\[\033[38;5;7m\]($(git branch 2>/dev/null | grep '^*' | colrm 1 2))\[$(tput sgr0)\] \w\n \[$(tput sgr0)\]\[\033[38;5;14m\]\u\[$(tput sgr0)\] @ \[$(tput sgr0)\]\[\033[38;5;4m\]\h\[$(tput sgr0)\] > \[$(tput sgr0)\]"
+	export PS1="\n\[$(tput sgr0)\]\[\033[48;5;4m\]\\$ \t ($(git branch 2>/dev/null | grep '^*' | colrm 1 2)) \w \[$(tput sgr0)\]\n\[$(tput sgr0)\]   \[\033[38;5;14m\]\u\[$(tput sgr0)\] @ \[$(tput sgr0)\]\[\033[38;5;4m\]\h\[$(tput sgr0)\] > \[$(tput sgr0)\]"
 
 # LS Colour Output
 	export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33'
