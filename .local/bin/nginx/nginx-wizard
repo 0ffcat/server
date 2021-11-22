@@ -9,7 +9,6 @@ import os
 import sys
 import getpass
 import pwd
-from shutil import copyfile
 
 def makeSymLink(siteDir,uid,homeDir,siteURL):
     print("Creating a shortcut to directory in %s..." %homeDir)
