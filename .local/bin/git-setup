@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Name:        git-setup.py
+# Name:        git-setup
 # By:          cyancat
 # Tag Added:   22/11/2021
 # Desciption:  Sets up git account.
