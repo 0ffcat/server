@@ -1,15 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env python3
 
-# Title:	git-setup
-# By: 		cyancat
-# Tag Added:	02-02-2020
-# Description:  Change local git username and email
+# Name:        git-setup.py
+# By:          cyancat
+# Tag Added:   22/11/2021
+# Desciption:  Sets up git account.
 
-echo "Please enter your git username:"
-read usrnm
-echo "Please enter your email associated with this account:"
-read email
-git config --global user.name "$usrnm"
-git config --global user.email $email
-echo "Your set up is as follows..."
-git config --list
+import os
+
+username = input("Please enter your git username: ")
+emailAddress = input("Please enter the email address associated with this account: ")
+
+os.system("git config --global user.name \"" + username + "\"")
+os.system("git config --global user.email \"" + emailAddress + "\"")
+os.system("git config --list")

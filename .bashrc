@@ -35,3 +35,4 @@
 	export PATH=$PATH:$GOPATH/bin
 	export GOPATH=$GOPATH:/home/cat/gocode
 
+# Other PATH's go here: 

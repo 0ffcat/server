@@ -1,72 +1,165 @@
-set viminfo+=n~/.vim/viminfo
- 
+" Name: 			 vimrc
+" By:					 cyancat
+" Tag Added:	 22/11/2021
+" Desciption:	 my vimrc config file
+
+	set viminfo+=n~/.vim/viminfo
+
+" NOTES, :echo getcompletion('SEARCH', 'filetype')
+
+" Plug Load 
+	if empty(glob('~/.vim/autoload/plug.vim'))
+		silent !curl -fLo ~\.vim\autoload\plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+		autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+	endif  
+
+" Plug List
+	call plug#begin('~/.vim/plugged')
+		Plug 'flazz/vim-colorschemes'
+		Plug 'vim-airline/vim-airline'
+		Plug 'vim-airline/vim-airline-themes'
+		Plug 'junegunn/limelight.vim'
+		Plug 'junegunn/goyo.vim'
+		"Lang
+		Plug 'pangloss/vim-javascript'
+		Plug 'alvan/vim-closetag'
+	call plug#end()
+
+" Plug Settings
+	" Colourscheme
+	color louver
+	let g:airline_theme='silver'
+	" Goyo
+	filetype detect
+	if (&ft=='markdown' || &ft=='text')
+		set textwidth=50
+		nnoremap :q :qa
+		autocmd VimEnter * :Goyo 50x70%
+	endif
+	" Limelight
+	autocmd! User GoyoEnter Limelight
+	autocmd! User GoyoLeave Limelight!
+	"Closetag Extensions
+	let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.php'
+	
 " General
-syntax on 
-:set laststatus=2
-:set encoding=utf-8
-:set fileencoding=utf-8
-:set fileencodings=utf-8
-:set ttyfast
-:set title
-:set wildmenu
-:set nostartofline
-:set shortmess=atI
-:set history=1000
-:set lazyredraw
-:set noshowmatch
-:set belloff=all
-:set mouse=
-:set ttymouse=
+	syntax on 
+	set laststatus=2
+	set encoding=utf-8
+	set fileencoding=utf-8
+	set fileencodings=utf-8
+	set ttyfast
+	set title
+	set wildmenu
+	set nostartofline
+	set shortmess=atI
+	set history=1000
+	set lazyredraw
+	set noshowmatch
+	set belloff=all
+	set mouse=
+	set ttymouse=
+	" Auto Comment Insertion, Off
+	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Wrapping and Line Breaks
-:set wrap
-:set linebreak
-:set nolist  
-:set scrolloff=13
+	set wrap
+	set linebreak
+	set nolist  
+	set scrolloff=13
+	set textwidth=80
+	set formatoptions-=t0
+	set formatoptions-=t
 
 " Shifting
-:set shiftround
-:set autoindent
-:set smartindent 
-:set cpoptions  +=I
+	set shiftround
+	set autoindent
+	set smartindent 
+	set cpoptions  +=I
 
 " Number Stuff
-:set number 
-:set relativenumber
+	set number 
+	set relativenumber
 
 " Search
-:set showmatch
-:set hlsearch
-:set ic
+	set showmatch
+	set hlsearch
+	set ic
+	set incsearch
 
 " Visual Mode 
-:vnoremap <c-v> <c-q>" Tab
+	vnoremap <c-v> <c-q>" Tab
 
 " Tab Tab Tab
-:set tabstop=2 softtabstop=0 noexpandtab shiftwidth=2 smarttab
-" Useful Visual Tab
-:vnoremap <tab> >vgv
-:vnoremap <s-tab> <vgv
+	set tabstop=2 softtabstop=0 noexpandtab shiftwidth=2 smarttab
+	"Useful Visual Tab
+	vnoremap <tab> >vgv
+	vnoremap <s-tab> <vgv
 
 " Make hjkl Graphical
-:nnoremap j gj
-:nnoremap k gk
-:vnoremap j gj
-:vnoremap k gk
+	nnoremap j gj
+	nnoremap k gk
+	vnoremap j gj
+	vnoremap k gk
 
 " 'd' Deletes, Doesn't Cut
-:nnoremap d "_d
-:vnoremap d "_d
+	nnoremap d "_d
+	vnoremap d "_d
 
 " Split Nav
-:nnoremap <c-j> <C-W><C-J>
-:nnoremap <c-k> <C-W><C-K>
-:nnoremap <c-l> <C-W><C-L>
-:nnoremap <c-h> <C-W><C-H>
+	nnoremap <c-j> <C-W><C-J>
+	nnoremap <c-k> <C-W><C-K>
+	nnoremap <c-l> <C-W><C-L>
+	nnoremap <c-h> <C-W><C-H>
 
 " Removing h and l, for... (trying this out)
-:nnoremap h b
-:nnoremap l w
+	":nnoremap h b
+	":nnoremap l w
 
 " Go
-:nnoremap <c-b> :!go run % <cr>
+	nnoremap <c-b> :!go run % <cr>
+
+
+" Add File Description Text 
+" (used to be desc.sh file to do this)
+
+	let filename = expand('%:t')
+	let author = "cyancat"
+	let curtime = strftime("%d/%m/%Y")
+
+" <!-- These Style Comments -->
+	if (&ft=='html' || &ft=='php' || &ft=='markdown')
+
+			iab <expr> desc "<!--<cr>Name: 			 " . filename 
+				\ . "<cr>By:					 " . author
+				\	. "<cr>Tag Added:	 " . curtime
+				\ . "<cr>Desciption:	DESCRIPTION<cr>-->"
+				\ . "<esc>/DESCRIPTION<cr>cw"
+
+" # These Style Comments
+	elseif (&ft=='sh' || &ft=='bash' || &ft=='python')
+
+			iab <expr> desc "# Name: 			 " . filename 
+				\ . "<cr># By:					 " . author
+				\	. "<cr># Tag Added:	 " . curtime
+				\ . "<cr># Desciption: "
+
+"	/* These Style Comments */ 
+	elseif (&ft=='css')
+
+			iab <expr> desc "/*<cr>Name: 			 " . filename 
+				\ . "<cr>By:					 " . author
+				\	. "<cr>Tag Added:	 " . curtime
+				\ . "<cr>Desciption:	DESCRIPTION<cr>*/"
+				\ . "<esc>/DESCRIPTION<cr>cw"
+
+" " These Style Comments
+	elseif (&ft=='autohotkey' || &ft=='vim')
+
+			iab <expr> desc "\" Name: 			 " . filename 
+				\ . "<cr>\" By:					 " . author
+				\	. "<cr>\" Tag Added:	 " . curtime
+				\ . "<cr>\" Desciption:	"
+
+	endif
+

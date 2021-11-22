@@ -1,14 +1,22 @@
-#!/bin/bash
+#!/usr/bin/env python3
 
-# Title:	add-path
-# By: 		cyancat
-# Tag Added:	02-02-2020
-# Description:  Add current dir to path
+import os
+from pathlib import Path
+# Find out what shell is being used
+from os import environ
 
-  shelltype=$(ps -p $$ -oargs= | head -n1 | cut -d " " -f1)
-# If Bash
-  if [[ ${shelltype} == /bin/bash ]] ; then
-    echo "  export PATH=\"\$PATH:$PWD\"" >>		${HOME}/.bashrc
-    echo "$PWD added to PATH..."
-    echo "Remember to 'source ~/.bashrc'!"
-  fi
+# Current Working Directory will be added to path
+dirToAdd = str(Path.cwd())
+bashrc = str(Path.home()) + "/.bashrc"
+
+if environ['SHELL'] == "/bin/bash":
+    if os.path.exists(bashrc): 
+        bashrcFile = open(bashrc, "a")
+        bashrcFile.write("\texport PATH=\"\$PATH:" + dirToAdd + "\"\n")
+        bashrcFile.close()
+        print("The location " + dirToAdd + " has been added to path in .bashrc")
+    else: 
+        print("Could not find a .bashrc file to write to.")
+
+else: 
+    print("This script doesn\'t support shells other than bash, currently.")
