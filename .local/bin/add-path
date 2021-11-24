@@ -7,21 +7,21 @@
 
 import os
 from pathlib import Path
-# Find out what shell is being used
 from os import environ
 
+def main():
 # Current Working Directory will be added to path
-dirToAdd = str(Path.cwd())
-bashrc = str(Path.home()) + "/.bashrc"
-
-if environ['SHELL'] == "/bin/bash":
-    if os.path.exists(bashrc): 
-        bashrcFile = open(bashrc, "a")
-        bashrcFile.write("\texport PATH=\"\$PATH:" + dirToAdd + "\"\n")
-        bashrcFile.close()
-        print("The location " + dirToAdd + " has been added to path in .bashrc")
+    dir_to_add = str(Path.cwd())
+    bashrc = str(Path.home()) + "/.bashrc"
+    if environ['SHELL'] == "/bin/bash":
+        if os.path.exists(bashrc): 
+            with open(bashrc, "a") as bashrc_file:
+                bashrc_file.write("\texport PATH=\"$PATH:" + dir_to_add + "\"\n")
+            print(f'The location {dir_to_add} has been added to path in .bashrc')
+        else: 
+            print("Could not find a .bashrc file to write to.")
     else: 
-        print("Could not find a .bashrc file to write to.")
+        print("This script doesn't support shells other than bash, currently.")
 
-else: 
-    print("This script doesn\'t support shells other than bash, currently.")
+if __name__ == '__main__':
+    main()

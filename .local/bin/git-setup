@@ -7,9 +7,13 @@
 
 import os
 
-username = input("Please enter your git username: ")
-emailAddress = input("Please enter the email address associated with this account: ")
+def main():
+    username = input("Please enter your git username: ")
+    email_address = input("Please enter the email address associated with this account: ")
 
-os.system("git config --global user.name \"" + username + "\"")
-os.system("git config --global user.email \"" + emailAddress + "\"")
-os.system("git config --list")
+    os.system("git config --global user.name \"" + username + "\"")
+    os.system("git config --global user.email \"" + email_address + "\"")
+    os.system("git config --list")
+
+if __name__ == '__main__':
+    main()
