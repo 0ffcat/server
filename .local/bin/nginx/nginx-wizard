@@ -5,73 +5,87 @@
 # Tag Added:   22/11/2021
 # Desciption:  Nginx Wizard, was originally written in bash, now in Python. 
 
-import os
-import sys
 import getpass
+import os
 import pwd
+import sys
 
-def makeSymLink(siteDir,uid,homeDir,siteURL):
-    print("Creating a shortcut to directory in %s..." %homeDir)
-    os.symlink(siteDir,homeDir + siteURL)
-    os.chown(homeDir + siteURL,uid,uid)
+NGINX_PATH = "/etc/nginx"
+SITES_AVAILABLE_PATH = "/sites-available"
+SITE_BASE_DIR = "/var/www"
+HOME_BASE_DIR = "/home"
 
-def createVarDir(siteDir,uid):
-    if not os.path.exists(siteDir): 
-        print("Creating directory at %s..." %siteDir)
-        os.mkdir(siteDir)
-        os.chown(siteDir,uid,uid)
-        os.chmod(siteDir,755)
+
+def make_sym_link(site_dir,uid,home_dir,site_url):
+    print(f"Creating a shortcut to directory in {home_dir}...")
+    os.symlink(site_dir,home_dir + site_url)
+    os.chown(home_dir + site_url,uid,uid)
+
+def create_var_dir(site_dir,uid):
+    if not os.path.exists(site_dir): 
+        print(f"Creating directory at {site_dir}...")
+        os.mkdir(site_dir)
+        os.chown(site_dir,uid,uid)
+        os.chmod(site_dir,755)
+        return True
     else: 
-        print("A directory of this name (%s) already exists. Please try again, or edit the current configuration." %siteDir)
-        sys.exit()
+        print(f"A directory of this name ({site_dir}) already exists. Please try again, or edit the current configuration.")
+        return False
 
-def isUserRoot():
-    if getpass.getuser() != "root":
+def is_user_root():
+    return getpass.getuser() == "root"
+
+def is_ssl():
+    while "Please answer y or n.":
+        decide_ssl = input("Would you like this setup to use the Nginx SSL configuration file? (y/n) ").lower()
+        if decide_ssl == "y" or decide_ssl == "yes":
+            return True
+        elif decide_ssl == "n" or decide_ssl == "no":
+            return False
+
+def create_config(nginx_template_file,site_url,nginx_file):
+    print("Moving Nginx template file into position with new details...")
+    with open(nginx_template_file, "rt") as nginx_temp:
+        with open(nginx_file, "wt") as nginx_new:
+            for line in nginx_temp:
+                nginx_new.write(line.replace('your_domain',site_url))
+    print("Creating link from /sites-available/ to /sites-enabled/...")
+    os.symlink(nginx_file,f"/etc/nginx/sites-enabled/{site_url}")
+    return
+
+
+
+def main():
+# User Details (needs to be run as root)
+    if not is_user_root():
         print("This command needs to be run with sudo.")
         sys.exit()
+    username = input("Please enter your user account username: ")
+    uid = pwd.getpwnam(username).pw_uid
+# Site URL Details
+    site_url = input("Please enter the site URL: ")
+    site_url = site_url.replace("www.","") # we don't want a www. URL
+    site_dir = f"{SITE_BASE_DIR}/{site_url}"
+    home_dir = f"{HOME_BASE_DIR}/{username}/"
+# Nginx Location Details
+    nginx_file = f"{NGINX_PATH}{SITES_AVAILABLE_PATH}/{site_url}"
 
-def isSSL():
-    decideSSL = input("Would you like this setup to use the Nginx SSL configuration file? ")
-    if decideSSL == "yes" or decideSSL == "y":
-        return True
+# Creating SITE_BASE_DIR directories
+    if not create_var_dir(site_dir,uid): 
+       sys.exit()
 
-def createConfig(nginxTemplateFile,siteURL):
-    print("Moing Nginx template file into position with new details...")
-    nginxFile = "/etc/nginx/sites-available/" + siteURL
-    with open(nginxTemplateFile, "rt") as nginxTemp:
-        with open(nginxFile, "wt") as nginxNew:
-            for line in nginxTemp:
-                nginxNew.write(line.replace('your_domain',siteURL))
-    print("Creating link from /sites-available/ to /sites-enabled...")
-    os.symlink(nginxFile,"/etc/nginx/sites-enabled/" + siteURL)
-    print("Don't forget to refresh nginx, with 'service nginx reload'!")
-    sys.exit()
-
-
-
-# Command needs to be run with sudo for some commands,
-# but it also needs to know what the main user account will
-# be called, so it can change some file permissions 
-# accordingly, later on! 
-isUserRoot()
-username = input("Please enter your user account username: ")
-uid = pwd.getpwnam(username).pw_uid
-siteURL = input("Please enter the site URL: ")
-siteURL = siteURL.replace("www.","") # we don't want a www. URL
-siteDir = "/var/www/" + siteURL
-homeDir = "/home/" + username + "/"
-
-# Creating /var/www directories
-createVarDir(siteDir,uid)
-
-# Make SymLink
-makeSymLink(siteDir,uid,homeDir,siteURL)
+# Make SymLink in Home Directory
+    make_sym_link(site_dir,uid,home_dir,site_url)
 
 # Copy and configure Nginx files in /etc/nginx/sites-available, etc.
-if isSSL() == True:
-    nginxTemplateFile = homeDir + ".local/bin/nginx/template-ssl.nginx"
-else: 
-    nginxTemplateFile = homeDir + ".local/bin/nginx/template.nginx"
+    if is_ssl():
+        nginx_template_file = f"{home_dir}.local/bin/nginx/template-ssl.nginx"
+    else: 
+        nginx_template_file = f"{home_dir}.local/bin/nginx/template.nginx"
 
-createConfig(nginxTemplateFile,siteURL)
+    create_config(nginx_template_file,site_url,nginx_file)
 
+    print("Don't forget to refresh nginx, with 'service nginx reload'!")
+
+if __name__ == '__main__': 
+    main()
