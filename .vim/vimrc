@@ -63,6 +63,7 @@
 	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
 " Wrapping and Line Breaks
+	set breakindent
 	set wrap
 	set linebreak
 	set nolist  
