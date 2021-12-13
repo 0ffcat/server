@@ -13,7 +13,7 @@
 	alias t="tmux -f ${HOME}/.config/tmux/tmux.conf"
 
 # Remap nvim to vim (if nvim)
-	command -v nvim &> /dev/null && alias vim="nvim"
+	command -v nvim &> /dev/null && alias vim='nvim'
 
 # PS1
 	export PS1="\n\[$(tput sgr0)\]\[\033[48;5;4m\]\\$ \t ($(git branch 2>/dev/null | grep '^*' | colrm 1 2)) \w \[$(tput sgr0)\]\n\[$(tput sgr0)\]   \[\033[38;5;14m\]\u\[$(tput sgr0)\] @ \[$(tput sgr0)\]\[\033[38;5;4m\]\h\[$(tput sgr0)\] > \[$(tput sgr0)\]"

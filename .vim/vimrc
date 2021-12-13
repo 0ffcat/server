@@ -1,9 +1,15 @@
-" Name: 			 vimrc
-" By:					 cyancat
-" Tag Added:	 22/11/2021
-" Desciption:	 my vimrc config file
+" Name:          vimrc
+" By:	           cyancat
+" Tag Added:     22/11/2021
+" Desciption:    my vimrc config file
 
-	set viminfo+=n~/.vim/viminfo
+
+" Things that only work with vim, not neovim
+	if !has('nvim')
+		set viminfo+=n~/.vim/viminfo
+		" From 'General'
+		set ttymouse=
+	endif
 
 " NOTES, :echo getcompletion('SEARCH', 'filetype')
 
@@ -41,9 +47,15 @@
 	autocmd! User GoyoLeave Limelight!
 	"Closetag Extensions
 	let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.php'
+
+" Explore if no file is passed
+	if argc() == 0 && !exists("s:std_in")
+		autocmd vimenter * Explore 
+	endif
 	
 " General
 	syntax on 
+	set noswapfile
 	set laststatus=2
 	set encoding=utf-8
 	set fileencoding=utf-8
@@ -58,7 +70,6 @@
 	set noshowmatch
 	set belloff=all
 	set mouse=
-	set ttymouse=
 	" Auto Comment Insertion, Off
 	autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
