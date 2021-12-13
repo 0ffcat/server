@@ -131,47 +131,6 @@
 " Go
 	nnoremap <c-b> :!go run % <cr>
 
-
-" Add File Description Text 
-" (used to be desc.sh file to do this)
-
-	let filename = expand('%:t')
-	let author = "cyancat"
-	let curtime = strftime("%d/%m/%Y")
-
-" <!-- These Style Comments -->
-	if (&ft=='html' || &ft=='php' || &ft=='markdown')
-
-			iab <expr> desc "<!--<cr>Name: 			 " . filename 
-				\ . "<cr>By:					 " . author
-				\	. "<cr>Tag Added:	 " . curtime
-				\ . "<cr>Desciption:	DESCRIPTION<cr>-->"
-				\ . "<esc>/DESCRIPTION<cr>cw"
-
-" # These Style Comments
-	elseif (&ft=='sh' || &ft=='bash' || &ft=='python')
-
-			iab <expr> desc "# Name: 			 " . filename 
-				\ . "<cr># By:					 " . author
-				\	. "<cr># Tag Added:	 " . curtime
-				\ . "<cr># Desciption: "
-
-"	/* These Style Comments */ 
-	elseif (&ft=='css')
-
-			iab <expr> desc "/*<cr>Name: 			 " . filename 
-				\ . "<cr>By:					 " . author
-				\	. "<cr>Tag Added:	 " . curtime
-				\ . "<cr>Desciption:	DESCRIPTION<cr>*/"
-				\ . "<esc>/DESCRIPTION<cr>cw"
-
-" " These Style Comments
-	elseif (&ft=='autohotkey' || &ft=='vim')
-
-			iab <expr> desc "\" Name: 			 " . filename 
-				\ . "<cr>\" By:					 " . author
-				\	. "<cr>\" Tag Added:	 " . curtime
-				\ . "<cr>\" Desciption:	"
-
-	endif
+" Include desc.vim
+	source ~/.vim/desc.vim
 
